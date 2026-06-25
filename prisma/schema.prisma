@@ -1,0 +1,98 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+/// Estado de sincronización del producto local hacia Open Food Facts
+enum SyncStatus {
+  PENDING
+  SYNCED
+  FAILED
+}
+
+/// Niveles de alerta para el semáforo nutricional
+enum AlertLevel {
+  BAJO
+  MEDIO
+  ALTO
+}
+
+/// Catálogo de nutrientes objetivo para las plantillas educativas
+enum NutrientTarget {
+  SUGAR
+  SODIUM
+  SATURATED_FAT
+  SALT
+}
+
+model Product {
+  id             String          @id @default(uuid()) @db.Uuid
+  barcode        String          @unique @db.VarChar(50)
+  name           String          @db.VarChar(150)
+  brand          String?         @db.VarChar(100)
+  imageUrl       String?         @db.VarChar(500)
+  ingredients    String?         @db.Text
+  isLocal        Boolean         @default(true)
+  syncStatus     SyncStatus      @default(PENDING)
+  createdAt      DateTime        @default(now()) @map("created_at")
+  updatedAt      DateTime        @updatedAt @map("updated_at")
+  
+  // Relaciones
+  nutritionalData NutritionalData?
+
+  @@index([barcode])
+  @@map("products")
+}
+
+model NutritionalData {
+  id                      String     @id @default(uuid()) @db.Uuid
+  productId               String     @unique @map("product_id") @db.Uuid
+  energyKcal              Float      @default(0) @map("energy_kcal")
+  carbohydrates           Float      @default(0)
+  sugars                  Float      @default(0)
+  proteins                Float      @default(0)
+  totalFat                Float      @default(0) @map("total_fat")
+  saturatedFat            Float      @default(0) @map("saturated_fat")
+  salt                    Float      @default(0)
+  sodium                  Float      @default(0)
+  fiber                   Float      @default(0)
+  
+  // Estados calculados del semáforo nutricional
+  trafficLightSugar        AlertLevel @default(BAJO) @map("traffic_light_sugar")
+  trafficLightSalt         AlertLevel @default(BAJO) @map("traffic_light_salt")
+  trafficLightSodium       AlertLevel @default(BAJO) @map("traffic_light_sodium")
+  trafficLightSaturatedFat AlertLevel @default(BAJO) @map("traffic_light_saturated_fat")
+
+
+  // Relaciones
+  product                 Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("nutritional_data")
+}
+
+model EducationalTemplate {
+  id             String         @id @default(uuid()) @db.Uuid
+  nutrientTarget NutrientTarget @map("nutrient_target")
+  alertLevel     AlertLevel     @map("alert_level")
+  message        String         @db.Text
+  recommendation String         @db.Text
+  createdAt      DateTime       @default(now()) @map("created_at")
+  updatedAt      DateTime       @updatedAt @map("updated_at")
+
+  @@unique([nutrientTarget, alertLevel])
+  @@map("educational_templates")
+}
+
+model OcrLog {
+  id         String   @id @default(uuid()) @db.Uuid
+  barcode    String?  @db.VarChar(50)
+  rawText    String   @db.Text @map("raw_text")
+  status     String   @db.VarChar(20)
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@map("ocr_logs")
+}
