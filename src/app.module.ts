@@ -4,6 +4,7 @@ import { envValidationSchema } from './common/config/env.validation';
 import { OpenFoodFactsModule } from './modules/open-food-facts/open-food-facts.module';
 import { ProductsModule } from './modules/products/products.module';
 import { OcrModule } from './modules/ocr/ocr.module';
+import { PedagogicModule } from './modules/pedagogic/pedagogic.module';
 
 @Module({
   imports: [
@@ -15,6 +16,8 @@ import { OcrModule } from './modules/ocr/ocr.module';
     OpenFoodFactsModule,
     ProductsModule,
     OcrModule,
+    PedagogicModule,
+
 
   ],
   controllers: [],

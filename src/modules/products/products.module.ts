@@ -12,3 +12,5 @@ import { EvaluatorService } from './services/evaluator.service';
     providers: [ProductsService, ProductsRepository, PrismaService, EvaluatorService],
 })
 export class ProductsModule { }
+
+// pnpm add tesseract.js
