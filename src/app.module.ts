@@ -5,6 +5,7 @@ import { OpenFoodFactsModule } from './modules/open-food-facts/open-food-facts.m
 import { ProductsModule } from './modules/products/products.module';
 import { OcrModule } from './modules/ocr/ocr.module';
 import { PedagogicModule } from './modules/pedagogic/pedagogic.module';
+import { ReportsModule } from './modules/reports/reports.module';
 
 @Module({
   imports: [
@@ -17,8 +18,7 @@ import { PedagogicModule } from './modules/pedagogic/pedagogic.module';
     ProductsModule,
     OcrModule,
     PedagogicModule,
-
-
+    ReportsModule
   ],
   controllers: [],
   providers: [],

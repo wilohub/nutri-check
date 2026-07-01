@@ -1,24 +1,37 @@
 import { ApiProperty } from '@nestjs/swagger';
 
+class NutrientEquivalence {
+    @ApiProperty()
+    grams!: number;
+
+    @ApiProperty()
+    equivalentUnits!: number; // Cucharaditas
+
+    @ApiProperty()
+    percentageOfDailyLimit!: number; // % consumido del día
+}
+
+class ExerciseRequired {
+    @ApiProperty()
+    totalCaloriesToBurn!: number;
+
+    @ApiProperty()
+    minutesWalking!: number;
+
+    @ApiProperty()
+    minutesRunning!: number;
+}
+
 export class EvaluationResponseDto {
-    @ApiProperty({ example: 80, description: 'Total de Nutri-Puntos ganados por el estudiante' })
-    scoreEarned!: number;
+    @ApiProperty()
+    sugar!: NutrientEquivalence;
 
-    @ApiProperty({ example: 50, description: 'Puntos base según la calidad del producto' })
-    baseScore!: number;
+    @ApiProperty()
+    saturatedFat!: NutrientEquivalence;
 
-    @ApiProperty({ example: 30, description: 'Bono adicional si el producto requirió uso de OCR' })
-    ocrBonus!: number;
+    @ApiProperty()
+    exercise!: ExerciseRequired;
 
-    @ApiProperty({
-        example: [
-            'Este producto contiene niveles elevados de azúcares libres...',
-            'Las grasas saturadas en exceso pueden acumularse en tus arterias...'
-        ],
-        description: 'Lista de advertencias y consejos educativos personalizados'
-    })
-    educationalTips!: string[];
-
-    @ApiProperty({ example: 'Nutri-Colaborador', description: 'Insignia otorgada temporalmente por la acción' })
-    badgeEarned!: string;
+    @ApiProperty()
+    healthTip!: string;
 }

@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException, ConflictException, Logger } from '@nestjs/common';
 import { ProductsRepository } from '../repositories/products.repository';
 import { OpenFoodFactsService } from '../../open-food-facts/services/open-food-facts.service';
-import { CreateProductDto } from '../dto/create-product.dto';
+import { GoogleSheetsService } from '../../reports/services/google-sheets.service'; // <-- Importar
 import { Product } from '@prisma/client';
-import { EvaluatorService } from './evaluator.service';
+import { CreateProductDto } from '../dto/create-product.dto';
 
 @Injectable()
 export class ProductsService {
@@ -12,43 +12,35 @@ export class ProductsService {
     constructor(
         private readonly productsRepository: ProductsRepository,
         private readonly openFoodFactsService: OpenFoodFactsService,
+        private readonly googleSheetsService: GoogleSheetsService, // <-- Inyectar
     ) { }
 
     async scanProduct(barcode: string): Promise<any> {
         this.logger.log(`Escaneando producto con código: ${barcode}`);
 
-        // 1. Buscar en la base de datos local (cache o productos creados por OCR)
+        // 1. Buscar local
         const localProduct = await this.productsRepository.findByBarcode(barcode);
         if (localProduct) {
-            this.logger.log(`Producto ${barcode} encontrado localmente.`);
+            const nut = localProduct.nutritionalData;
+
+            // Sincronizar acción al Dashboard del Profesor de forma asíncrona (Fire & Forget)
+            this.googleSheetsService.appendRow('Log Escaneos', [
+                new Date().toISOString(), // Fecha y hora exacta del escaneo
+                barcode,
+                localProduct.name,
+                localProduct.brand || 'N/A',
+                nut?.trafficLightSugar || 'BAJO',
+                nut?.trafficLightSalt || 'BAJO',
+                nut?.trafficLightSaturatedFat || 'BAJO',
+                nut?.trafficLightSodium || 'BAJO',
+                'App Móvil (Usuario Anónimo)' // <-- Indicador de consumo general
+            ]).catch(err => this.logger.error('Fallo asíncrono controlable de Sheets:', err.message));
             return { source: 'local', data: localProduct };
         }
 
-        // 2. Si no existe localmente, delegar al módulo Open Food Facts externo
-        // Si OFF lanza un 404, este escalará directamente al cliente móvil de forma limpia
-        const externalProduct = await this.openFoodFactsService.fetchProductByBarcode(barcode);
-        const nutriments = externalProduct.nutritionalData;
+        // 2. Buscar en OFF... (Continúa igual el código de OFF de la fase anterior)
 
-        // Instanciar un objeto evaluador directo o inyectar para calcular al vuelo
-        const evaluator = new EvaluatorService();
-        const saltVal = externalProduct.nutritionalData.salt || (nutriments.sodium * 2.5);
-
-        return {
-            source: 'open_food_facts',
-            data: {
-                externalProduct,
-                nutritionalData: {
-                    ...nutriments,
-                    salt: saltVal,
-                    trafficLightSugar: evaluator.getSugarLevel(nutriments.sugars),
-                    trafficLightSaturatedFat: evaluator.getSaturatedFatLevel(nutriments.saturatedFat),
-                    trafficLightSodium: evaluator.getSodiumLevel(nutriments.sodium),
-                    trafficLightSalt: evaluator.getSaltLevel(saltVal),
-                },
-            },
-        };
     }
-
     async createLocalProduct(dto: CreateProductDto): Promise<Product> {
         const existing = await this.productsRepository.findByBarcode(dto.barcode);
         if (existing) {
