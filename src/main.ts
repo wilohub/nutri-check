@@ -8,6 +8,13 @@ async function bootstrap(): Promise<void> {
   const logger = new Logger('Bootstrap');
   const app = await NestFactory.create(AppModule);
 
+  // 🔥 ACTIVA ESTA LÍNEA AQUÍ PARA PERMITIR PETICIONES DESDE TU CELULAR
+  app.enableCors({
+    origin: '*', // Permite conexiones desde cualquier origen (esencial para desarrollo móvil)
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  });
+
   const configService = app.get(ConfigService);
   const port = configService.get<number>('PORT') || 3000;
   const apiPrefix = configService.get<string>('API_PREFIX') || 'api/v1';
@@ -39,7 +46,7 @@ async function bootstrap(): Promise<void> {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup(`${apiPrefix}/docs`, app, document);
 
-  await app.listen(port);
+  const server = await app.listen(port, '0.0.0.0');
   logger.log(`Servidor de Nutri-Check corriendo exitosamente en el puerto: ${port}`);
   logger.log(`Documentación de Swagger disponible en: http://localhost:${port}/${apiPrefix}/docs`);
 }
