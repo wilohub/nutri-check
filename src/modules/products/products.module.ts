@@ -7,10 +7,10 @@ import { PrismaService } from '../../providers/database/prisma.service';
 import { EvaluatorService } from './services/evaluator.service';
 
 @Module({
-    imports: [OpenFoodFactsModule], // Interconexión: Requerimos el servicio exportado de OFF
-    controllers: [ProductsController],
-    providers: [ProductsService, ProductsRepository, PrismaService, EvaluatorService],
+  imports: [OpenFoodFactsModule], // Interconexión: Requerimos el servicio exportado de OFF
+  controllers: [ProductsController],
+  providers: [ProductsService, ProductsRepository, PrismaService, EvaluatorService],
 })
-export class ProductsModule { }
+export class ProductsModule {}
 
 // pnpm add tesseract.js

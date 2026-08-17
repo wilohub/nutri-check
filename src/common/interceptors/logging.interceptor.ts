@@ -4,18 +4,18 @@ import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
-    private readonly logger = new Logger('NutriCheck_Audit');
+  private readonly logger = new Logger('NutriCheck_Audit');
 
-    intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-        const request = context.switchToHttp().getRequest();
-        const { method, url } = request;
-        const startTime = Date.now();
+  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    const request = context.switchToHttp().getRequest();
+    const { method, url } = request;
+    const startTime = Date.now();
 
-        return next.handle().pipe(
-            tap(() => {
-                const duration = Date.now() - startTime;
-                this.logger.log(`[AUDIT] ${method} ${url} | Procesado en: ${duration}ms`);
-            }),
-        );
-    }
+    return next.handle().pipe(
+      tap(() => {
+        const duration = Date.now() - startTime;
+        this.logger.log(`[AUDIT] ${method} ${url} | Procesado en: ${duration}ms`);
+      }),
+    );
+  }
 }

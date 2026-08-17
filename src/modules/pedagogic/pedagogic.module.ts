@@ -6,7 +6,7 @@ import { EvaluatorService } from '../products/services/evaluator.service';
 import { PrismaService } from '../../providers/database/prisma.service';
 
 @Module({
-    controllers: [PedagogicController],
-    providers: [PedagogicService, ProductsRepository, EvaluatorService, PrismaService],
+  controllers: [PedagogicController],
+  providers: [PedagogicService, ProductsRepository, EvaluatorService, PrismaService],
 })
-export class PedagogicModule { }
+export class PedagogicModule {}

@@ -25,9 +25,9 @@ async function bootstrap(): Promise<void> {
   // Activación global de Pipes de validación estructurada para DTOs (Fail-Fast)
   app.useGlobalPipes(
     new ValidationPipe({
-      whitelist: true,            // Remueve propiedades que no estén en el DTO
+      whitelist: true, // Remueve propiedades que no estén en el DTO
       forbidNonWhitelisted: true, // Lanza error si se envían propiedades no permitidas
-      transform: true,            // Transforma tipos automáticamente (ej. string a number)
+      transform: true, // Transforma tipos automáticamente (ej. string a number)
     }),
   );
 
@@ -36,7 +36,7 @@ async function bootstrap(): Promise<void> {
     .setTitle('Proyecto Nutri-Check API')
     .setDescription(
       'Documentación del Backend del MVP Nutri-Check para competencias estudiantiles.\n' +
-      'Permite el escaneo de códigos de barra, evaluación nutricional por semáforo y procesamiento OCR.',
+        'Permite el escaneo de códigos de barra, evaluación nutricional por semáforo y procesamiento OCR.',
     )
     .setVersion('1.0.0')
     .addTag('Products', 'Operaciones relacionadas al procesamiento y consulta de alimentos')
