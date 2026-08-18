@@ -13,8 +13,20 @@ export class ExternalProductResponseDto {
   @ApiProperty({ example: 'Quaker', description: 'Marca del fabricante' })
   brand!: string;
 
-  @ApiProperty({ example: '100 g', description: 'Marca del fabricante' })
-  cantidad!: string;
+  @ApiProperty({ example: 'food', description: 'Tipo del producto' })
+  productType!: string;
+
+  // @ApiProperty({ example: '1 kg', description: 'Cantidad producto' })
+  // quantity!: string;
+
+  // @ApiProperty({ example: '1000 g', description: 'Cantidad del producto en gramos' })
+  // quantity_in_grams!: string;
+
+  // @ApiProperty({ example: '1000', description: 'Unidad del producto en gramos' })
+  // product_quantity!: number;
+
+  // @ApiProperty({ example: 'g', description: 'Unidad del producto en gramos' })
+  // product_quantity_unit!: string;
 
   @ApiProperty({ example: 'https://images.openfoodfacts.org/...', description: 'URL de la imagen' })
   imageUrl!: string;
@@ -24,6 +36,20 @@ export class ExternalProductResponseDto {
     description: 'Ingredientes en bruto',
   })
   ingredients!: string;
+
+  @ApiProperty({ description: 'Valor de la cantidad del producto' })
+  quantityData!: {
+    display: string;
+    value: number;
+    unit: string;
+  };
+
+  @ApiProperty({ description: 'Valor cantidades por porciones' })
+  servingQuantityData!: {
+    display: string;
+    value: number;
+    unit: string;
+  };
 
   @ApiProperty({ description: 'Valores nutricionales por cada 100g/100ml' })
   nutritionalData!: {

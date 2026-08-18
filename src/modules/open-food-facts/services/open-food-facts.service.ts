@@ -17,7 +17,7 @@ export class OpenFoodFactsService {
   }
 
   async fetchProductByBarcode(barcode: string): Promise<ExternalProductResponseDto> {
-    const url = `${this.baseUrl}/api/v2/product/${barcode}.json`;
+    const url = `${this.baseUrl}/api/v3/product/${barcode}.json`;
 
     try {
       this.logger.log(`Consultando producto externo con código de barras: ${barcode}`);
@@ -33,21 +33,32 @@ export class OpenFoodFactsService {
       const product = data.product;
       const nutriments = product.nutriments || {};
 
-      const packagingWithQuantity =
-        data.product.ecoscore_data?.adjustments?.packaging?.packagings?.find(
-          (item) => item.quantity_per_unit,
-        );
+      this.logger.log(nutriments);
 
-      this.logger.log(`Cantidad por unidad: ${packagingWithQuantity?.quantity_per_unit}`);
+      // const packagingWithQuantity =
+      //   data.product.ecoscore_data?.adjustments?.packaging?.packagings?.find(
+      //     (item) => item.quantity_per_unit,
+      //   );
+      // this.logger.log(`Cantidad por unidad: ${packagingWithQuantity?.quantity_per_unit}`);
 
       // Mapeo estricto hacia ExternalProductResponseDto
       return {
         barcode: barcode,
         name: product.product_name || 'Producto Desconocido',
         brand: product.brands || 'Marca genérica',
-        cantidad: packagingWithQuantity.quantity_per_unit,
+        productType: product.product_type,
         imageUrl: product.image_url || null,
         ingredients: product.ingredients_text || 'No especificados',
+        quantityData: {
+          display: product.quantity,
+          value: product.product_quantity,
+          unit: product.product_quantity_unit,
+        },
+        servingQuantityData: {
+          display: product.serving_size,
+          value: product.serving_quantity,
+          unit: product.serving_quantity_unit,
+        },
         nutritionalData: {
           energyKcal: Number(nutriments['energy-kcal_100g']) || 0,
           carbohydrates: Number(nutriments['carbohydrates_100g']) || 0,
