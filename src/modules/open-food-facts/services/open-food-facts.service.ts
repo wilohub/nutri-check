@@ -33,11 +33,19 @@ export class OpenFoodFactsService {
       const product = data.product;
       const nutriments = product.nutriments || {};
 
+      const packagingWithQuantity =
+        data.product.ecoscore_data?.adjustments?.packaging?.packagings?.find(
+          (item) => item.quantity_per_unit,
+        );
+
+      this.logger.log(`Cantidad por unidad: ${packagingWithQuantity?.quantity_per_unit}`);
+
       // Mapeo estricto hacia ExternalProductResponseDto
       return {
         barcode: barcode,
         name: product.product_name || 'Producto Desconocido',
         brand: product.brands || 'Marca genérica',
+        cantidad: packagingWithQuantity.quantity_per_unit,
         imageUrl: product.image_url || null,
         ingredients: product.ingredients_text || 'No especificados',
         nutritionalData: {

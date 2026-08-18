@@ -13,6 +13,9 @@ export class ExternalProductResponseDto {
   @ApiProperty({ example: 'Quaker', description: 'Marca del fabricante' })
   brand!: string;
 
+  @ApiProperty({ example: '100 g', description: 'Marca del fabricante' })
+  cantidad!: string;
+
   @ApiProperty({ example: 'https://images.openfoodfacts.org/...', description: 'URL de la imagen' })
   imageUrl!: string;
 

@@ -64,6 +64,36 @@ export class CreateProductDto {
   @IsOptional()
   brand?: string;
 
+  // @ApiProperty({ example: '100 g', required: false })
+  // @IsString()
+  // @IsOptional()
+  // quantity_per_unit?: string;
+
+  // @ApiProperty({ example: '100', required: false })
+  // @IsString()
+  // @IsOptional()
+  // product_quantity?: string;
+
+  // @ApiProperty({ example: 'g', required: false })
+  // @IsString()
+  // @IsOptional()
+  // product_quantity_unit?: string;
+
+  // @ApiProperty({ example: '1 kg', required: false })
+  // @IsString()
+  // @IsOptional()
+  // quantity?: string;
+
+  // @ApiProperty({ example: '1000 g', required: false })
+  // @IsString()
+  // @IsOptional()
+  // quantity_imported?: string;
+
+  // @ApiProperty({ example: 'food', required: false })
+  // @IsString()
+  // @IsOptional()
+  // product_type?: string;
+
   @ApiProperty({ example: 'https://images.images.com/photo.jpg', required: false })
   @IsString()
   @IsOptional()
