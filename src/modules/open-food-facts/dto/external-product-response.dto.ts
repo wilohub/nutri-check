@@ -16,18 +16,6 @@ export class ExternalProductResponseDto {
   @ApiProperty({ example: 'food', description: 'Tipo del producto' })
   productType!: string;
 
-  // @ApiProperty({ example: '1 kg', description: 'Cantidad producto' })
-  // quantity!: string;
-
-  // @ApiProperty({ example: '1000 g', description: 'Cantidad del producto en gramos' })
-  // quantity_in_grams!: string;
-
-  // @ApiProperty({ example: '1000', description: 'Unidad del producto en gramos' })
-  // product_quantity!: number;
-
-  // @ApiProperty({ example: 'g', description: 'Unidad del producto en gramos' })
-  // product_quantity_unit!: string;
-
   @ApiProperty({ example: 'https://images.openfoodfacts.org/...', description: 'URL de la imagen' })
   imageUrl!: string;
 
@@ -49,6 +37,14 @@ export class ExternalProductResponseDto {
     display: string;
     value: number;
     unit: string;
+  };
+
+  @ApiProperty({ description: 'Valores para el semaforo nutricional' })
+  nutrientLevels!: {
+    fat: string;
+    salt: string;
+    saturatedFat: string;
+    sugars: string;
   };
 
   @ApiProperty({ description: 'Valores nutricionales por cada 100g/100ml' })

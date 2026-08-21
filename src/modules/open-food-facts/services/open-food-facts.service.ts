@@ -3,6 +3,7 @@ import { HttpService } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
 import { firstValueFrom } from 'rxjs';
 import { ExternalProductResponseDto } from '../dto/external-product-response.dto';
+import { roundToTwoDecimals } from '../../../common/utils/math.util';
 
 @Injectable()
 export class OpenFoodFactsService {
@@ -32,6 +33,7 @@ export class OpenFoodFactsService {
 
       const product = data.product;
       const nutriments = product.nutriments || {};
+      const nutrientLevels = product.nutrient_levels || {};
 
       this.logger.log(nutriments);
 
@@ -59,16 +61,22 @@ export class OpenFoodFactsService {
           value: product.serving_quantity,
           unit: product.serving_quantity_unit,
         },
+        nutrientLevels: {
+          fat: nutrientLevels['fat'],
+          salt: nutrientLevels['salt'],
+          saturatedFat: nutrientLevels['saturated-fat'],
+          sugars: nutrientLevels['sugars'],
+        },
         nutritionalData: {
-          energyKcal: Number(nutriments['energy-kcal_100g']) || 0,
-          carbohydrates: Number(nutriments['carbohydrates_100g']) || 0,
-          sugars: Number(nutriments['sugars_100g']) || 0,
-          proteins: Number(nutriments['proteins_100g']) || 0,
-          totalFat: Number(nutriments['fat_100g']) || 0,
-          saturatedFat: Number(nutriments['saturated-fat_100g']) || 0,
-          salt: Number(nutriments['salt_100g']) || 0,
-          sodium: Number(nutriments['sodium_100g']) || 0,
-          fiber: Number(nutriments['fiber_100g']) || 0,
+          energyKcal: roundToTwoDecimals(nutriments['energy-kcal_100g']) || 0,
+          carbohydrates: roundToTwoDecimals(nutriments['carbohydrates_100g']) || 0,
+          sugars: roundToTwoDecimals(nutriments['sugars_100g']) || 0,
+          proteins: roundToTwoDecimals(nutriments['proteins_100g']) || 0,
+          totalFat: roundToTwoDecimals(nutriments['fat_100g']) || 0,
+          saturatedFat: roundToTwoDecimals(nutriments['saturated-fat_100g']) || 0,
+          salt: roundToTwoDecimals(nutriments['salt_100g']) || 0,
+          sodium: roundToTwoDecimals(nutriments['sodium_100g']) || 0,
+          fiber: roundToTwoDecimals(nutriments['fiber_100g']) || 0,
         },
       };
     } catch (error: any) {
