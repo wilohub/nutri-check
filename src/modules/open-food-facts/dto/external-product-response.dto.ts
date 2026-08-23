@@ -8,7 +8,7 @@ export class ExternalProductResponseDto {
     example: 'Avena Quaker Instantánea',
     description: 'Nombre comercial del producto',
   })
-  name!: string;
+  name!: string | null;
 
   @ApiProperty({ example: 'Quaker', description: 'Marca del fabricante' })
   brand!: string;
@@ -47,16 +47,68 @@ export class ExternalProductResponseDto {
     sugars: string;
   };
 
-  @ApiProperty({ description: 'Valores nutricionales por cada 100g/100ml' })
+  @ApiProperty({ description: 'Valores nutricionales por cada 100g/100ml api v3.6' })
   nutritionalData!: {
-    energyKcal: number;
-    carbohydrates: number;
-    sugars: number;
-    proteins: number;
-    totalFat: number;
-    saturatedFat: number;
-    salt: number;
-    sodium: number;
-    fiber: number;
+    carbohydrates: {
+      unit: string;
+      value: number;
+    } | null;
+    cholesterol: {
+      unit: string;
+      value: number;
+    } | null;
+    energy: {
+      unit: string;
+      value: number;
+    } | null;
+    energyKcal: {
+      unit: string;
+      value: number;
+    } | null;
+    energyKj: {
+      unit: string;
+      value: number;
+    } | null;
+    fiber: {
+      unit: string;
+      value: number;
+    } | null;
+    proteins: {
+      unit: string;
+      value: number;
+    } | null;
+    salt: {
+      unit: string;
+      value: number;
+    } | null;
+    saturatedFat: {
+      unit: string;
+      value: number;
+    } | null;
+    sodium: {
+      unit: string;
+      value: number;
+    } | null;
+    sugars: {
+      unit: string;
+      value: number;
+    } | null;
+    totalFat: {
+      unit: string;
+      value: number;
+    } | null;
   };
+
+  // @ApiProperty({ description: 'Valores nutricionales por cada 100g/100ml' })
+  // nutritionalData!: {
+  //   energyKcal: number;
+  //   carbohydrates: number;
+  //   sugars: number;
+  //   proteins: number;
+  //   totalFat: number;
+  //   saturatedFat: number;
+  //   salt: number;
+  //   sodium: number;
+  //   fiber: number;
+  // };
 }
