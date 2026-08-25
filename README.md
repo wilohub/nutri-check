@@ -28,5 +28,13 @@
 ```bash
 $ pnpm install
 $ pnpm prisma generate
+$ pnpm start:dev
 ```
-
+## Creacion DB
+```bash
+$ psql -U postgres
+$ CREATE DATABASE nutri_check;
+$ \l
+$\c nutri_check
+$ \q
+```
