@@ -36,7 +36,7 @@ export class OpenFoodFactsService {
       const nutriments = product.nutrition.aggregated_set.nutrients || {};
       const nutrientLevels = product.nutrient_levels || {};
 
-      this.logger.log(nutriments['energy-kcal'].unit);
+      this.logger.log(product.serving_size);
 
       const mapNutrient = (nutrient?: { unit?: string; value?: number }) => {
         if (!nutrient) {
