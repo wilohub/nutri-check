@@ -27,10 +27,13 @@
 
 ```bash
 $ pnpm install
+$ pnpm prisma migrate dev --name init
 $ pnpm prisma generate
 $ pnpm start:dev
 ```
+
 ## Creacion DB
+
 ```bash
 $ psql -U postgres
 $ CREATE DATABASE nutricheck_db;

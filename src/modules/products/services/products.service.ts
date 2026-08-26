@@ -15,7 +15,7 @@ export class ProductsService {
     private readonly productsRepository: ProductsRepository,
     private readonly openFoodFactsService: OpenFoodFactsService,
     private readonly googleSheetsService: GoogleSheetsService,
-  ) { }
+  ) {}
 
   async scanProduct(barcode: string): Promise<any> {
     this.logger.log(`Escaneando producto con código: ${barcode}`);
