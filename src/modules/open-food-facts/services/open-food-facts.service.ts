@@ -86,7 +86,7 @@ export class OpenFoodFactsService {
           totalFat: mapNutrient(nutriments['fat']),
         },
       };
-      this.logger.log(`Resultado mapeado para ${barcode}: ${JSON.stringify(result, null, 2)}`);
+      // this.logger.log(`Resultado mapeado para ${barcode}: ${JSON.stringify(result, null, 2)}`);
       return result;
     } catch (error: unknown) {
       // 1. Verificamos si es un objeto con la propiedad "response" (estilo Axios/HTTP)

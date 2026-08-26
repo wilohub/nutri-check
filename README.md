@@ -33,8 +33,8 @@ $ pnpm start:dev
 ## Creacion DB
 ```bash
 $ psql -U postgres
-$ CREATE DATABASE nutri_check;
+$ CREATE DATABASE nutricheck_db;
 $ \l
-$\c nutri_check
+$\c nutricheck_db
 $ \q
 ```

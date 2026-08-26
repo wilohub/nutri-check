@@ -15,7 +15,7 @@ export class ProductsService {
     private readonly productsRepository: ProductsRepository,
     private readonly openFoodFactsService: OpenFoodFactsService,
     private readonly googleSheetsService: GoogleSheetsService,
-  ) {}
+  ) { }
 
   async scanProduct(barcode: string): Promise<any> {
     this.logger.log(`Escaneando producto con código: ${barcode}`);
@@ -47,6 +47,8 @@ export class ProductsService {
       try {
         const offProductDto: ExternalProductResponseDto =
           await this.openFoodFactsService.fetchProductByBarcode(barcode);
+
+        this.logger.log(`Codigo de barra del producto: ${offProductDto.barcode}`);
 
         if (offProductDto) {
           const normalizedOFF = normalizeProductData(offProductDto, 'off');
