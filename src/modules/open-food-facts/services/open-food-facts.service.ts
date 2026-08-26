@@ -36,7 +36,7 @@ export class OpenFoodFactsService {
       const nutriments = product.nutrition.aggregated_set.nutrients || {};
       const nutrientLevels = product.nutrient_levels || {};
 
-      this.logger.log(product.serving_size);
+      this.logger.log(product.product_name);
 
       const mapNutrient = (nutrient?: { unit?: string; value?: number }) => {
         if (!nutrient) {
@@ -47,9 +47,8 @@ export class OpenFoodFactsService {
           value: roundToTwoDecimals(nutrient.value || 0),
         };
       };
-
       // Mapeo estricto hacia ExternalProductResponseDto
-      return {
+      const result: ExternalProductResponseDto = {
         barcode: barcode,
         name: product.product_name || 'Producto Desconocido',
         brand: product.brands || 'Marca genérica',
@@ -86,19 +85,9 @@ export class OpenFoodFactsService {
           sugars: mapNutrient(nutriments['sugars']),
           totalFat: mapNutrient(nutriments['fat']),
         },
-
-        // nutritionalData: {
-        //   energyKcal: roundToTwoDecimals(nutriments['energy-kcal_100g']) || 0,
-        //   carbohydrates: roundToTwoDecimals(nutriments['carbohydrates_100g']) || 0,
-        //   sugars: roundToTwoDecimals(nutriments['sugars_100g']) || 0,
-        //   proteins: roundToTwoDecimals(nutriments['proteins_100g']) || 0,
-        //   totalFat: roundToTwoDecimals(nutriments['fat_100g']) || 0,
-        //   saturatedFat: roundToTwoDecimals(nutriments['saturated-fat_100g']) || 0,
-        //   salt: roundToTwoDecimals(nutriments['salt_100g']) || 0,
-        //   sodium: roundToTwoDecimals(nutriments['sodium_100g']) || 0,
-        //   fiber: roundToTwoDecimals(nutriments['fiber_100g']) || 0,
-        // },
       };
+      this.logger.log(`Resultado mapeado para ${barcode}: ${JSON.stringify(result, null, 2)}`);
+      return result;
     } catch (error: unknown) {
       // 1. Verificamos si es un objeto con la propiedad "response" (estilo Axios/HTTP)
       if (
@@ -112,16 +101,13 @@ export class OpenFoodFactsService {
           `El producto con código de barras ${barcode} no existe en Open Food Facts.`,
         );
       }
-
       // 2. Verificamos si ya es una excepción de NestJS
       if (error instanceof NotFoundException) {
         throw error;
       }
-
       // 3. Extraemos el mensaje de forma segura para el logger
       const errorMessage = error instanceof Error ? error.message : String(error);
       this.logger.error(`Error de conexión con Open Food Facts API: ${errorMessage}`);
-
       throw new BadGatewayException(
         'Error de comunicación externa con el proveedor de datos alimenticios.',
       );
