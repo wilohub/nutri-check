@@ -34,6 +34,8 @@ model Product {
   barcode        String          @unique @db.VarChar(50)
   name           String          @db.VarChar(150)
   brand          String?         @db.VarChar(100)
+  quantityNum    Float?          @default(100) @map("quantity_num")
+  quantityUnit   String?         @default("g") @map("quantity_unit") @db.VarChar(10)
   imageUrl       String?         @db.VarChar(500)
   ingredients    String?         @db.Text
   isLocal        Boolean         @default(true)
@@ -41,7 +43,6 @@ model Product {
   createdAt      DateTime        @default(now()) @map("created_at")
   updatedAt      DateTime        @updatedAt @map("updated_at")
   
-  // Relaciones
   nutritionalData NutritionalData?
 
   @@index([barcode])
