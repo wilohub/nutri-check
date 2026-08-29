@@ -41,3 +41,10 @@ $ \l
 $\c nutricheck_db
 $ \q
 ```
+
+## Free OCR API
+
+```bash
+$ Ir al siguiente enlace -> [text](https://ocr.space/ocrapi)
+$ Despues al correo llegara la clave
+```
