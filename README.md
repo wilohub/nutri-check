@@ -29,6 +29,7 @@
 $ pnpm install
 $ pnpm prisma migrate dev --name init
 $ pnpm prisma generate
+$ npx prisma studio
 $ pnpm start:dev
 ```
 
@@ -45,6 +46,6 @@ $ \q
 ## Free OCR API
 
 ```bash
-$ Ir al siguiente enlace -> [text](https://ocr.space/ocrapi)
+$ Ir al siguiente enlace -> https://ocr.space/ocrapi
 $ Despues al correo llegara la clave
 ```
