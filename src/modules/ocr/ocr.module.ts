@@ -3,6 +3,7 @@ import { HttpModule } from '@nestjs/axios';
 import { OcrController } from './controllers/ocr.controller';
 import { OcrService } from './services/ocr.service';
 import { PrismaService } from '../../providers/database/prisma.service';
+import { EvaluatorService } from '../products/services/evaluator.service';
 
 @Module({
   imports: [
@@ -11,6 +12,6 @@ import { PrismaService } from '../../providers/database/prisma.service';
     }),
   ],
   controllers: [OcrController],
-  providers: [OcrService, PrismaService],
+  providers: [OcrService, PrismaService, EvaluatorService],
 })
 export class OcrModule {}
