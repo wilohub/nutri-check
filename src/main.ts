@@ -3,10 +3,15 @@ import { AppModule } from './app.module';
 import { ValidationPipe, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { json, urlencoded } from 'express';
 
 async function bootstrap(): Promise<void> {
   const logger = new Logger('Bootstrap');
   const app = await NestFactory.create(AppModule);
+
+  // Ampliar el limite para JSON y datos codificados en la URL (hasta 15mb)
+  app.use(json({ limit: '15mb' }));
+  app.use(urlencoded({ extended: true, limit: '15mb' }));
 
   // 🔥 ACTIVA ESTA LÍNEA AQUÍ PARA PERMITIR PETICIONES DESDE TU CELULAR
   app.enableCors({
@@ -47,7 +52,7 @@ async function bootstrap(): Promise<void> {
   SwaggerModule.setup(`${apiPrefix}/docs`, app, document);
 
   const server = await app.listen(port, '0.0.0.0');
-  logger.log(`Servidor de Nutri-Check corriendo exitosamente en el puerto: ${port}`);
+  logger.log(`Servidor de Nutri-Check corriendo exitosamente en el puerto: ${server}`);
   logger.log(`Documentación de Swagger disponible en: http://localhost:${port}/${apiPrefix}/docs`);
 }
 bootstrap();

@@ -19,7 +19,17 @@ export class OcrController {
 
   @Post('process')
   @HttpCode(HttpStatus.OK)
-  @UseInterceptors(FileInterceptor('image'))
+  @UseInterceptors(
+    FileInterceptor('image', {
+      limits: {
+        fileSize: 15 * 1024 * 1024,
+      },
+    }),
+  )
+  async processOrc(@UploadedFile() file: Express.Multer.File, @Body('barcode') barcode?: string) {
+    return this.ocrService.processLabelImage(file, barcode);
+  }
+
   @ApiConsumes('multipart/form-data')
   @ApiOperation({
     summary: 'Subir una fotografía de etiqueta nutricional para extraer texto e ingredientes',
